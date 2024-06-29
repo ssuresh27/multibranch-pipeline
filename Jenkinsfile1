@@ -70,11 +70,6 @@ pipeline {
                     sh """
                     echo "Running YES Code"
                     """
-                } 
-                else {
-                    sh """
-                    echo "Running NO Code"
-                    """
                 }
             }
             }
