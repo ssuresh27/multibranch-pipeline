@@ -24,19 +24,30 @@ pipeline {
         }
         stage('User mode') {
             steps {
-                input message: 'Do you want to proceed with OPatch in report mode, Just prints out the actions without executing?', ok: 'Yes',
-                parameters: [booleanParam(name: 'enable', defaultValue: true)]
                 script {
-                    if(params.enable) {
-                        sh """
-                        echo "Building Artifact"
-                        """
+                    // Define Variable
+                    def USER_INPUT = input(
+                    message: 'User input required - Some Yes or No question?',
+                    parameters: [
+                            [$class: 'ChoiceParameterDefinition',
+                             choices: ['no','yes'].join('\n'),
+                             name: 'input',
+                             description: 'Menu - select box option']
+                    ])
 
-                        sh """
-                        echo "Deploying Code"
-                        """
-                    }
+                echo "The answer is: ${USER_INPUT}"
+
+                if( "${USER_INPUT}" == "yes"){
+                    sh """
+                    echo "Running YES Code"
+                    """
+                } 
+                else {
+                    sh """
+                    echo "Running NO Code"
+                    """
                 }
+            }
             }
         }
 
