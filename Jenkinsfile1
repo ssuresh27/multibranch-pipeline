@@ -25,7 +25,7 @@ pipeline {
         stage('User mode') {
             steps {
                 input message: 'Do you want to proceed with OPatch in report mode, Just prints out the actions without executing?', ok: 'Yes',
-                parameters: [booleanParam(name: 'enable', defaultValue: false)]
+                parameters: [booleanParam(name: 'enable', defaultValue: true)]
                 script {
                     if(params.enable) {
                         sh """
