@@ -27,7 +27,7 @@ pipeline {
                 script {
                     // Define Variable
                     def USER_INPUT = input(
-                    message: 'User input required - Some Yes or No question?',
+                    message: 'User input required - select "Yes" to proceed?',
                     parameters: [
                             [$class: 'ChoiceParameterDefinition',
                              choices: ['no','yes'].join('\n'),
@@ -52,17 +52,31 @@ pipeline {
         }
 
         stage('Build Deploy Code') {
-            when {
-                branch 'devops'
-            }
             steps {
-                sh """
-                echo "Building Artifact"
-                """
+                script {
+                    // Define Variable
+                    def USER_INPUT = input(
+                    message: 'User input required - select "Yes" to proceed?',
+                    parameters: [
+                            [$class: 'ChoiceParameterDefinition',
+                             choices: ['no','yes'].join('\n'),
+                             name: 'input',
+                             description: 'Menu - select box option']
+                    ])
 
-                sh """
-                echo "Deploying Code"
-                """
+                echo "The answer is: ${USER_INPUT}"
+
+                if( "${USER_INPUT}" == "yes"){
+                    sh """
+                    echo "Running YES Code"
+                    """
+                } 
+                else {
+                    sh """
+                    echo "Running NO Code"
+                    """
+                }
+            }
             }
         }
 
