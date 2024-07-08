@@ -22,6 +22,18 @@ pipeline {
                 """
             }
         }
+        stage('Run OPatch in report mode') {
+            steps {
+                input message: 'Do you want to proceed with OPatch in report mode, Just prints out the actions without executing?', ok: 'Yes',
+                parameters: [booleanParam(name: 'skip_step', defaultValue: false)]
+                script {
+                    if(params.skip_step) {
+                         echo "Running ${params.skip_step}"
+                        
+                    }
+                }
+            }
+        }
         stage('User mode') {
             steps {
                 script {
