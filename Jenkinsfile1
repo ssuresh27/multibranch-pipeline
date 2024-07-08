@@ -25,10 +25,10 @@ pipeline {
         stage('Run OPatch in report mode') {
             steps {
                 input message: 'Do you want to proceed with OPatch in report mode, Just prints out the actions without executing?', ok: 'Yes',
-                parameters: [booleanParam(name: 'skip_step', defaultValue: false)]
+                parameters: [booleanParam(name: 'skip_step')]
                 script {
                     if(params.skip_step) {
-                         echo "Running ${params.skip_step}"
+                         sh "echo Running ${params.skip_step}"
                         
                     }
                 }
@@ -57,30 +57,6 @@ pipeline {
                 else {
                     sh """
                     echo "Running NO Code"
-                    """
-                }
-            }
-            }
-        }
-
-        stage('Build Deploy Code') {
-            steps {
-                script {
-                    // Define Variable
-                    def USER_INPUT = input(
-                    message: 'User input required - select "Yes" to proceed?',
-                    parameters: [
-                            [$class: 'ChoiceParameterDefinition',
-                             choices: ['no','yes'].join('\n'),
-                             name: 'input',
-                             description: 'Menu - select box option']
-                    ])
-
-                echo "The answer is: ${USER_INPUT}"
-
-                if( "${USER_INPUT}" == "yes"){
-                    sh """
-                    echo "Running YES Code"
                     """
                 }
             }
